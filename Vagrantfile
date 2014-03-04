@@ -41,7 +41,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-  config.vm.synced_folder "/var/www", "/vagrant_www"
+  # config.vm.synced_folder "/var/www", "/vagrant_www"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
@@ -106,16 +106,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # HTTP instead of HTTPS depending on your configuration. Also change the
   # validation key to validation.pem.
   #
-  config.vm.provision :chef_client do |chef|
-    chef.chef_server_url = "https://api.opscode.com/organizations/bcampaigner"
-    chef.validation_key_path = "bcampaigner-validator.pem"
-  end
-  #
-  # If you're using the Opscode platform, your validator client is
-  # ORGNAME-validator, replacing ORGNAME with your organization name.
-  #
-  # If you have your own Chef Server, the default validation client name is
-  # chef-validator, unless you changed the configuration.
-  #
-  chef.validation_client_name = "bcampaigner-validator"
+  # config.vm.provision :chef_client do |chef|
+  #   chef.chef_server_url = "https://api.opscode.com/organizations/bcampaigner"
+  #   chef.validation_key_path = "~/dev/chef-repo/.chef/bcampaigner-validator.pem"
+  #   #
+  #   # If you're using the Opscode platform, your validator client is
+  #   # ORGNAME-validator, replacing ORGNAME with your organization name.
+  #   #
+  #   # If you have your own Chef Server, the default validation client name is
+  #   # chef-validator, unless you changed the configuration.
+  #   #
+  #   chef.validation_client_name = "bcampaigner-validator"
+  # end
 end
