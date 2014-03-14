@@ -4,7 +4,6 @@ lock '3.1.0'
 set :deploy_via, :remote_cache
 set :use_sudo, true
 set :user, 'devops'
-set :deployer_user, 'deployer'
 
 set :application, 'blog'
 set :repo_url, 'https://github.com/barakarg/blog'
@@ -42,7 +41,7 @@ namespace :deploy do
   desc 'Restart application'
   task :restart do
     on roles(:app), in: :sequence, wait: 5 do
-      execute "sudo sv 2 /home/#{fetch(:deployer_user)}/service/#{fetch(:application)}"
+      execute "sudo sv 2 /home/#{fetch(:user)}/service/#{fetch(:application)}"
     end
   end
 
@@ -59,4 +58,10 @@ namespace :deploy do
   end
 
   after :publishing, :restart
+
+  # after :updated, :bundle do
+  #   on roles(:app), in: :sequence, wait: 5 do
+  #     execute "sudo bundle install --no-rdoc --no-ri"
+  #   end
+  # end
 end
