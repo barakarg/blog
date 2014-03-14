@@ -1,6 +1,10 @@
 # config valid only for Capistrano 3.1
 lock '3.1.0'
 
+require 'capistrano/bundler'
+require 'capistrano/rails/migrations'
+require 'capistrano/rails/assets'
+
 set :deploy_via, :remote_cache
 set :use_sudo, true
 set :user, 'devops'
@@ -45,23 +49,40 @@ namespace :deploy do
     end
   end
 
-  after :publishing, :upload_env_vars do
+  desc 'Upload environment variables'
+  task :upload_env_vars do
     on roles(:app), in: :sequence, wait: 5 do
       upload!(".env.#{fetch(:rails_env)}", "#{fetch(:release_path)}/.env.#{fetch(:rails_env)}", :via => :scp)
     end
   end
+
+  desc "Migrate DB"
+  task :migrate_db do
+    on roles(:app), in: :sequence, wait: 5 do
+      run "cd #{fetch(:release_path)} && bundle exec rake db:migrate RAILS_ENV=production"
+    end
+  end
   
-  after :started, :set_permissions do
+  desc "Bundle gems"
+  task :bundle_install do
+    on roles(:app), in: :sequence, wait: 5 do
+      run "cd #{fetch(:release_path)} && bundle install"
+    end
+  end
+  
+  desc "Set permissions to deployed files"
+  task :set_permissions do
     on roles(:app), in: :sequence, wait: 5 do
       sudo "chown -R #{fetch(:user)} #{fetch(:deploy_to)} && chmod -R g+s #{fetch(:deploy_to)}"
     end
   end
 
-  after :publishing, :restart
+  after :started, :set_permissions
 
-  # after :updated, :bundle do
-  #   on roles(:app), in: :sequence, wait: 5 do
-  #     execute "sudo bundle install --no-rdoc --no-ri"
-  #   end
-  # end
+  after :publishing, :upload_env_vars
+  # after :publishing, :bundle_install
+  # after :publishing, :migrate_db
+  
+  after :published, :restart
+
 end
