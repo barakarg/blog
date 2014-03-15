@@ -1,12 +1,7 @@
 # config valid only for Capistrano 3.1
 lock '3.1.0'
 
-require 'capistrano/bundler'
-require 'capistrano/rails/migrations'
-require 'capistrano/rails/assets'
-
 set :deploy_via, :remote_cache
-set :use_sudo, true
 set :user, 'devops'
 
 set :application, 'blog'
@@ -56,19 +51,19 @@ namespace :deploy do
     end
   end
 
-  desc "Migrate DB"
-  task :migrate_db do
-    on roles(:app), in: :sequence, wait: 5 do
-      run "cd #{fetch(:release_path)} && bundle exec rake db:migrate RAILS_ENV=production"
-    end
-  end
+  # desc "Migrate DB"
+  # task :migrate_db do
+  #   on roles(:app), in: :sequence, wait: 5 do
+  #     run "cd #{fetch(:release_path)} && bundle exec rake db:migrate RAILS_ENV=production"
+  #   end
+  # end
   
-  desc "Bundle gems"
-  task :bundle_install do
-    on roles(:app), in: :sequence, wait: 5 do
-      run "cd #{fetch(:release_path)} && bundle install"
-    end
-  end
+  # desc "Bundle gems"
+  # task :bundle_install do
+  #   on roles(:app), in: :sequence, wait: 5 do
+  #     run "cd #{fetch(:release_path)} && bundle install"
+  #   end
+  # end
   
   desc "Set permissions to deployed files"
   task :set_permissions do

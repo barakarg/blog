@@ -46,7 +46,11 @@ gem 'unicorn'
 
 # deployment tools
 group :development do
-  gem 'capistrano'
+  gem 'capistrano', '~> 3.1.0', require: false
+  gem 'capistrano-rails',   '~> 1.1', require: false
+  gem 'capistrano-bundler', '~> 1.1', require: false
+  
+
   gem "berkshelf", github: "berkshelf/berkshelf"
   gem "vagrant", github: "mitchellh/vagrant", tag: "v1.4.2"
   gem 'vagrant-berkshelf', github: "berkshelf/vagrant-berkshelf"
