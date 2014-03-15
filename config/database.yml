@@ -3,8 +3,8 @@ development:
   encoding: unicode
   database: blog_development
   pool: 5
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
+  username: dbuser
+  password: dbuser
   host: localhost
   port: 5432
 
@@ -13,7 +13,7 @@ production:
   encoding: unicode
   database: blog_production
   pool: 5
-  username: <%= ENV['DB_USER'] %>
-  password: <%= ENV['DB_PASS'] %>
+  username: dbuser
+  password: dbuser
   host: localhost
   port: 5432
